@@ -31,8 +31,6 @@ def top_filter_menu(response):
     if response == "6":
         return top_5_categories()
 
-    sys.stdout.write("Encerrando script\n")
-
 
 def leave_menu(response):
     if response == "7":
@@ -66,6 +64,6 @@ Selecione uma das opções a seguir:
             else top_filter_menu(response)
         )
         for new in news:
-            sys.stdout.write(new)
+            print(new)
     else:
         leave_menu(response)
