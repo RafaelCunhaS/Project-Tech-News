@@ -28,7 +28,23 @@ def scrape_next_page_link(html_content):
 
 
 def scrape_noticia(html_content):
-    pass
+    selector = Selector(html_content)
+    return {
+        "url": selector.css("link[rel=canonical]::attr(href)").get(),
+        "title": (selector.css("h1.entry-title::text").get()).strip(),
+        "timestamp": selector.css("li.meta-date::text").get(),
+        "writer": selector.css("span.author a::text").get(),
+        "comments_count": selector.css("span.author a::text").re_first(r"\d")
+        if None
+        else 0,
+        "summary": "".join(
+            selector.xpath(
+                "string(//div[@class='entry-content']//p[1])"
+            ).getall()
+        ).strip(),
+        "tags": selector.css("section.post-tags li a::text").getall(),
+        "category": selector.css("div.entry-details span.label::text").get(),
+    }
 
 
 def get_tech_news(amount):
